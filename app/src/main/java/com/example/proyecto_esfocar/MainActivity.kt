@@ -4,44 +4,36 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.proyecto_esfocar.data.local.EsfocarDatabase
+import com.example.proyecto_esfocar.data.repository.DocumentoRepository
+import com.example.proyecto_esfocar.data.repository.UsuarioRepository
+import com.example.proyecto_esfocar.ui.navigation.AppNavigation
 import com.example.proyecto_esfocar.ui.theme.Proyecto_EsfocarTheme
+import com.example.proyecto_esfocar.viewmodel.DocumentosViewModel
+import com.example.proyecto_esfocar.viewmodel.LoginViewModel
+import com.example.proyecto_esfocar.viewmodel.RegistroViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val database = EsfocarDatabase.getDatabase(this)
+        val usuarioRepository = UsuarioRepository(database.usuarioDao())
+        val documentoRepository = DocumentoRepository(database.documentoDao())
+
+        val loginViewModel = LoginViewModel(usuarioRepository)
+        val registroViewModel = RegistroViewModel(usuarioRepository)
+        val documentosViewModel = DocumentosViewModel(documentoRepository)
+
         setContent {
             Proyecto_EsfocarTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                AppNavigation(
+                    loginViewModel = loginViewModel,
+                    registroViewModel = registroViewModel,
+                    documentosViewModel = documentosViewModel
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Proyecto_EsfocarTheme {
-        Greeting("Android")
     }
 }
