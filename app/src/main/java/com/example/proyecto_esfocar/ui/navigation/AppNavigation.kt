@@ -11,12 +11,14 @@ import com.example.proyecto_esfocar.ui.screens.RegistroScreen
 import com.example.proyecto_esfocar.viewmodel.DocumentosViewModel
 import com.example.proyecto_esfocar.viewmodel.LoginViewModel
 import com.example.proyecto_esfocar.viewmodel.RegistroViewModel
+import com.example.proyecto_esfocar.ui.screens.BienvenidaScreen
 
 sealed class Screen(val route: String) {
-    object Login : Screen("login")
+    object Login : Screen("Bienvenida")
     object Registro : Screen("registro")
     object Home : Screen("home")
     object Documentos : Screen("documentos")
+    object Bienvenida : Screen("bienvenida")
 }
 
 @Composable
@@ -24,10 +26,21 @@ fun AppNavigation(
     loginViewModel: LoginViewModel,
     registroViewModel: RegistroViewModel,
     documentosViewModel: DocumentosViewModel
+
 ) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.Login.route) {
+    NavHost(navController = navController, startDestination = Screen.Bienvenida.route) {
+        composable(Screen.Bienvenida.route) {
+            BienvenidaScreen(
+                onIniciarSesion = {
+                    navController.navigate(Screen.Login.route)
+                },
+                onRegistrarse = {
+                    navController.navigate(Screen.Registro.route)
+                }
+            )
+        }
         composable(Screen.Login.route) {
             LoginScreen(
                 viewModel = loginViewModel,

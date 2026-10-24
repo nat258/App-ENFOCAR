@@ -1,123 +1,238 @@
-# ESFOCAR APP
+# 🇨🇱 ESFOCAR APP
 
 ## 1. Descripción del proyecto
 
-ESFOCAR APP es una aplicación móvil desarrollada en Kotlin mediante Android Studio, como parte de un proyecto académico.
+**ESFOCAR APP** es una aplicación móvil académica desarrollada en Android Studio utilizando Kotlin y Jetpack Compose. Su propósito es proporcionar un espacio formativo para acceder a documentos y recursos relacionados con la Escuela de Formación de Carabineros de Chile.
 
-El objetivo es organizar y facilitar el acceso a documentos y recursos de apoyo formativo de ESFOCAR.
+El proyecto busca facilitar el acceso a materiales de estudio mediante una interfaz organizada, navegación entre pantallas y funcionalidades orientadas a la gestión de usuarios y documentos.
 
-Actualmente, el proyecto se encuentra en la etapa de configuración inicial y organización de su estructura.
+La aplicación corresponde a un MVP académico y no está conectada a los sistemas institucionales reales.
 
-## 2. Tecnologías utilizadas
+## 2. Objetivos del proyecto
 
-- Kotlin
-- Android Studio
-- Jetpack Compose
-- Material Design 3
-- Room
-- KSP
-- Git y GitHub
+- Diseñar una interfaz móvil clara, intuitiva y organizada.
+- Incorporar pantallas de bienvenida, registro e inicio de sesión.
+- Implementar navegación entre las distintas secciones de la aplicación.
+- Organizar el código mediante paquetes y componentes reutilizables.
+- Preparar una estructura para la gestión de usuarios y documentos.
+- Incorporar almacenamiento local mediante Room.
+- Aplicar validaciones, gestión de estado y retroalimentación visual.
+- Integrar recursos nativos del dispositivo.
+- Utilizar Git, GitHub y Trello para colaborar y organizar el desarrollo.
 
-## 3. Estructura del proyecto
+## 3. Tecnologías utilizadas
+
+| Tecnología | Uso |
+|---|---|
+| Kotlin | Lenguaje de programación |
+| Android Studio | Entorno de desarrollo |
+| Jetpack Compose | Construcción de interfaces |
+| Material 3 | Diseño visual de la aplicación |
+| Navigation Compose | Navegación entre pantallas |
+| Room | Persistencia de datos local prevista |
+| KSP | Procesamiento de código para Room |
+| Git | Control de versiones |
+| GitHub | Repositorio del proyecto |
+| Trello | Organización y seguimiento de tareas |
+
+## 4. Estructura del proyecto
+
+El proyecto se organiza en paquetes para separar la interfaz de usuario, los modelos, el acceso a datos y la lógica de presentación.
 
 ```text
-com.example.proyecto_esfocar/
-|
-|-- data/
-|   |-- document/
-|   |-- local/
-|   |   |-- EsfocarDatabase.kt
-|   |-- repository/
-|
-|-- model/
-|   |-- Documento.kt
-|   |-- Usuario.kt
-|
-|-- ui/
-|   |-- components/
-|   |   |-- EsfocarComponents.kt
-|   |-- navigation/
-|   |   |-- AppNavigation.kt
-|   |-- screens/
-|   |   |-- DocumentosScreen.kt
-|   |   |-- HomeScreen.kt
-|   |   |-- LoginScreen.kt
-|   |   |-- RegistroScreen.kt
-|   |-- theme/
-|
-|-- util/
-|
-|-- viewmodel/
-|   |-- DocumentosViewModel.kt
-|   |-- LoginViewModel.kt
-|   |-- RegistroViewModel.kt
-|
-|-- MainActivity.kt
+Proyecto_ESFOCAR/
+│
+├── app/
+│   ├── build.gradle.kts
+│   │
+│   └── src/
+│       └── main/
+│           ├── AndroidManifest.xml
+│           │
+│           ├── java/
+│           │   └── com/example/proyecto_esfocar/
+│           │       │
+│           │       ├── MainActivity.kt
+│           │       │
+│           │       ├── data/
+│           │       │   ├── document/
+│           │       │   │
+│           │       │   ├── local/
+│           │       │   │   ├── DocumentoDao.kt
+│           │       │   │   ├── EsfocarDatabase.kt
+│           │       │   │   └── UsuarioDao.kt
+│           │       │   │
+│           │       │   └── repository/
+│           │       │       ├── DocumentoRepository.kt
+│           │       │       └── UsuarioRepository.kt
+│           │       │
+│           │       ├── model/
+│           │       │   ├── Documento.kt
+│           │       │   └── Usuario.kt
+│           │       │
+│           │       ├── ui/
+│           │       │   ├── components/
+│           │       │   │   └── EsfocarComponents.kt
+│           │       │   │
+│           │       │   ├── navigation/
+│           │       │   │   └── AppNavigation.kt
+│           │       │   │
+│           │       │   ├── screens/
+│           │       │   │   ├── BienvenidaScreen.kt
+│           │       │   │   ├── DocumentosScreen.kt
+│           │       │   │   ├── HomeScreen.kt
+│           │       │   │   ├── LoginScreen.kt
+│           │       │   │   └── RegistroScreen.kt
+│           │       │   │
+│           │       │   └── theme/
+│           │       │       ├── Color.kt
+│           │       │       ├── Theme.kt
+│           │       │       └── Type.kt
+│           │       │
+│           │       ├── util/
+│           │       │
+│           │       └── viewmodel/
+│           │           ├── DocumentosViewModel.kt
+│           │           ├── LoginViewModel.kt
+│           │           └── RegistroViewModel.kt
+│           │
+│           └── res/
+│               └── drawable/
+│                   └── escudo_esfocar_app.png
+│
+├── gradle/
+│   └── libs.versions.toml
+│
+├── build.gradle.kts
+├── settings.gradle.kts
+├── gradlew
+├── gradlew.bat
+└── README.md
 ```
 
-## 4. Organización de paquetes
+**Nota:** esta estructura representa los archivos identificados hasta el momento. Las carpetas `document` y `util` aparecen sin archivos en la captura revisada. La ubicación de la imagen del escudo debe comprobarse en `res/drawable`.
 
-- `data`: organización y acceso a los datos.
-- `data/document`: organización de los recursos relacionados con documentos.
-- `data/local`: configuración prevista para el almacenamiento local.
-- `data/repository`: gestión y acceso a los datos.
-- `model`: modelos de datos de usuarios y documentos.
-- `ui/screens`: pantallas de la aplicación.
-- `ui/components`: componentes visuales reutilizables.
-- `ui/navigation`: navegación entre pantallas.
-- `ui/theme`: configuración del tema visual.
-- `viewmodel`: gestión del estado y la lógica de presentación.
-- `util`: funciones auxiliares.
-- `MainActivity.kt`: actividad principal de la aplicación.
+## 5. Avances realizados
 
-## 5. Configuración realizada
+### 5.1. Organización del código
 
-// Se creó la estructura inicial de paquetes y archivos Kotlin.
-// Se organizaron las pantallas, los modelos y los ViewModels.
-// Se conservaron los archivos de tema generados por Android Studio.
-// Se añadieron las dependencias de Room.
-// Se configuró el complemento KSP.
-// Se sincronizó Gradle correctamente.
+Se ha organizado el proyecto mediante paquetes con responsabilidades diferenciadas:
+
+- `data`: destinado a la gestión y acceso a los datos.
+- `model`: contiene los modelos `Usuario` y `Documento`.
+- `ui/components`: destinado a componentes visuales reutilizables.
+- `ui/navigation`: contiene la configuración de navegación.
+- `ui/screens`: reúne las pantallas de la aplicación.
+- `ui/theme`: contiene los archivos del tema y los colores.
+- `viewmodel`: destinado a la lógica de presentación y gestión del estado.
+- `util`: reservado para funciones auxiliares.
+
+### 5.2. Configuración del proyecto
+
+Se han incorporado dependencias para trabajar con Room y KSP en el archivo `app/build.gradle.kts`.
+
+La sincronización de Gradle se completó correctamente.
+
+### 5.3. Diseño visual
+
+Se definió una paleta de colores inspirada en los tonos verde, amarillo y blanco.
+
+Los archivos `Color.kt` y `Theme.kt` se configuraron para aplicar estos colores a la interfaz mediante Material 3.
+
+### 5.4. Pantalla de bienvenida
+
+Se creó la pantalla `BienvenidaScreen.kt`, que incluye:
+
+- Nombre de la Escuela de Formación de Carabineros de Chile.
+- Imagen de identificación visual de ESFOCAR APP.
+- Mensaje de bienvenida.
+- Descripción de la aplicación.
+- Botón «Iniciar sesión».
+- Botón «Registrarse».
+
+La pantalla se ejecutó correctamente en el emulador de Android Studio.
+
+### 5.5. Navegación
+
+En `AppNavigation.kt` se definieron rutas para las siguientes pantallas:
+
+- Bienvenida.
+- Inicio de sesión.
+- Registro.
+- Inicio.
+- Documentos.
+
+Las conexiones entre las pantallas deben probarse para comprobar el funcionamiento de cada ruta y sus acciones.
+
+### 5.6. Organización de datos
+
+Se cuenta con archivos destinados a organizar la persistencia y el acceso a los datos:
+
+- `EsfocarDatabase.kt`
+- `DocumentoDao.kt`
+- `UsuarioDao.kt`
+- `DocumentoRepository.kt`
+- `UsuarioRepository.kt`
+
+La implementación de estos componentes debe verificarse para determinar qué operaciones están terminadas y cuáles faltan.
 
 ## 6. Estado actual del proyecto
 
-// Estructura de paquetes y archivos: creada.
-// Dependencias de Room y KSP: configuradas.
-// Modelos de usuario y documento: archivos creados, pendientes de implementación.
-// Pantallas: archivos creados, pendientes de implementación.
-// Navegación: pendiente de implementación.
-// Registro e inicio de sesión: pendientes de implementación.
-// Base de datos local: pendiente de implementación.
-// Gestión de documentos: pendiente de implementación.
-// Validaciones, animaciones y pruebas: pendientes de implementación.
+| Componente | Estado |
+|---|---|
+| Estructura de paquetes | Creada |
+| Dependencias de Room y KSP | Configuradas |
+| Paleta de colores | Definida |
+| Tema visual | Configurado |
+| Pantalla de bienvenida | Creada y ejecutada |
+| Imagen de bienvenida | Incorporada al diseño |
+| Rutas de navegación | Definidas inicialmente |
+| Pantallas de registro e inicio de sesión | Archivos creados; funcionamiento pendiente de verificar |
+| Pantalla de inicio | Archivo creado; funcionamiento pendiente de verificar |
+| Pantalla de documentos | Archivo creado; funcionamiento pendiente de verificar |
+| Modelos de usuario y documento | Archivos creados; implementación pendiente de verificar |
+| Base de datos Room | Archivos creados; implementación pendiente de verificar |
+| DAO y repositorios | Archivos creados; implementación pendiente de verificar |
+| Validaciones de formularios | Pendientes de verificar |
+| Persistencia local funcional | Pendiente de verificar |
+| Gestión de documentos | Pendiente de verificar |
+| Animaciones | Pendientes de implementar y probar |
+| Recursos nativos | Pendientes de integrar y probar |
+| Pruebas funcionales | Pendientes de realizar |
 
-## 7. Próximas tareas
+## 7. Próximas etapas de desarrollo
 
-1. Implementar los modelos de datos.
-2. Configurar las entidades, los DAO y la base de datos con Room.
-3. Implementar el registro de usuarios y el inicio de sesión.
-4. Desarrollar la navegación entre pantallas.
-5. Implementar la pantalla principal.
-6. Desarrollar la gestión de documentos.
-7. Incorporar las validaciones, las animaciones y los recursos requeridos.
-8. Realizar pruebas para verificar el funcionamiento de la aplicación.
+1. Revisar los modelos `Usuario.kt` y `Documento.kt`.
+2. Verificar la configuración de `EsfocarDatabase.kt`.
+3. Revisar las operaciones definidas en los DAO.
+4. Conectar los repositorios con los ViewModels.
+5. Completar y validar el registro de usuarios.
+6. Implementar y verificar el inicio de sesión.
+7. Comprobar la navegación entre todas las pantallas.
+8. Implementar la gestión y visualización de documentos.
+9. Incorporar almacenamiento local funcional.
+10. Agregar validaciones y mensajes de retroalimentación.
+11. Integrar recursos nativos y animaciones.
+12. Ejecutar pruebas y corregir errores.
+13. Actualizar la documentación conforme se completen las funcionalidades.
 
 ## 8. Control de versiones y trabajo colaborativo
 
-// El proyecto utiliza Git y GitHub para gestionar los cambios.
-// Se trabajará mediante ramas para organizar el desarrollo.
-// Los cambios se documentarán mediante mensajes de commit descriptivos.
-// La integración de los cambios se realizará de forma controlada.
+El proyecto utiliza Git y GitHub para gestionar los cambios y mantener un historial del desarrollo.
 
-## 9. Ejecución del proyecto
+Se recomienda registrar cada avance mediante commits con mensajes descriptivos y mantener las tareas organizadas en Trello.
 
-1. Clonar el repositorio de GitHub.
-2. Abrir el proyecto en Android Studio.
-3. Esperar a que Gradle sincronice las dependencias.
-4. Ejecutar la aplicación en un emulador o dispositivo Android compatible.
+El repositorio deberá permitir el acceso al docente y a las integrantes del equipo, según las instrucciones de la evaluación.
+
+## 9. Instrucciones de ejecución
+
+1. Abrir Android Studio.
+2. Abrir la carpeta del proyecto.
+3. Esperar a que finalice la sincronización de Gradle.
+4. Iniciar un emulador compatible o conectar un dispositivo Android.
+5. Ejecutar la aplicación desde Android Studio.
 
 ## 10. Observaciones
 
-// Este README describe la estructura y la configuración inicial del proyecto.
-// La creación de archivos no implica que sus funcionalidades estén implementadas.
-// La documentación se actualizará a medida que avance el desarrollo de ESFOCAR APP.
+Este documento refleja los archivos y avances identificados hasta el momento.
+
