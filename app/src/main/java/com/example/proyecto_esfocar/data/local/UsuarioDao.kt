@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.proyecto_esfocar.model.Usuario
 
 @Dao
@@ -19,4 +20,7 @@ interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios")
     suspend fun obtenerTodosLosUsuarios(): List<Usuario>
+
+    @Update
+    suspend fun actualizarUsuario(usuario: Usuario): Int
 }

@@ -16,4 +16,8 @@ class UsuarioRepository(private val usuarioDao: UsuarioDao) {
     suspend fun existeEmail(email: String): Boolean {
         return usuarioDao.obtenerUsuarioPorEmail(email) != null
     }
+
+    suspend fun actualizarUsuario(usuario: Usuario): Int {
+        return usuarioDao.actualizarUsuario(usuario)
+    }
 }
