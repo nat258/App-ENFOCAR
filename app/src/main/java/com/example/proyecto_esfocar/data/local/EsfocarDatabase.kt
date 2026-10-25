@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.proyecto_esfocar.model.Documento
 import com.example.proyecto_esfocar.model.Usuario
 
-@Database(entities = [Usuario::class, Documento::class], version = 1, exportSchema = false)
+@Database(entities = [Usuario::class, Documento::class], version = 3, exportSchema = false)
 abstract class EsfocarDatabase : RoomDatabase() {
 
     abstract fun usuarioDao(): UsuarioDao
