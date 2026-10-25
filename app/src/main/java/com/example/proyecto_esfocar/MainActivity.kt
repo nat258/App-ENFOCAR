@@ -12,6 +12,8 @@ import com.example.proyecto_esfocar.ui.theme.Proyecto_EsfocarTheme
 import com.example.proyecto_esfocar.viewmodel.DocumentosViewModel
 import com.example.proyecto_esfocar.viewmodel.LoginViewModel
 import com.example.proyecto_esfocar.viewmodel.RegistroViewModel
+import com.example.proyecto_esfocar.viewmodel.PerfilViewModel
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,13 +27,15 @@ class MainActivity : ComponentActivity() {
         val loginViewModel = LoginViewModel(usuarioRepository)
         val registroViewModel = RegistroViewModel(usuarioRepository)
         val documentosViewModel = DocumentosViewModel(documentoRepository)
+        val perfilViewModel = PerfilViewModel(usuarioRepository)
 
         setContent {
             Proyecto_EsfocarTheme {
                 AppNavigation(
                     loginViewModel = loginViewModel,
                     registroViewModel = registroViewModel,
-                    documentosViewModel = documentosViewModel
+                    documentosViewModel = documentosViewModel,
+                    perfilViewModel = perfilViewModel
                 )
             }
         }

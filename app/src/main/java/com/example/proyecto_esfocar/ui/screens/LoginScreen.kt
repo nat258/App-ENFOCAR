@@ -12,11 +12,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.proyecto_esfocar.viewmodel.LoginState
 import com.example.proyecto_esfocar.viewmodel.LoginViewModel
+import com.example.proyecto_esfocar.model.Usuario
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel,
-    onLoginExitoso: () -> Unit,
+    onLoginExitoso: (Usuario) -> Unit,
     onIrARegistro: () -> Unit
 ) {
     val email by viewModel.email.collectAsState()
@@ -24,9 +25,11 @@ fun LoginScreen(
     val loginState by viewModel.loginState.collectAsState()
 
     LaunchedEffect(loginState) {
-        if (loginState is LoginState.Success) {
+        val estado = loginState
+        if (estado is LoginState.Success) {
+            val usuario = estado.usuario
             viewModel.resetState()
-            onLoginExitoso()
+            onLoginExitoso(usuario)
         }
     }
 

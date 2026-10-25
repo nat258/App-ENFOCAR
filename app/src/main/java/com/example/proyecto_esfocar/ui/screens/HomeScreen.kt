@@ -8,10 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.proyecto_esfocar.ui.components.EsfocarTopBar
+import com.example.proyecto_esfocar.model.Usuario
 
 @Composable
 fun HomeScreen(
+    usuario: Usuario,
     onIrADocumentos: () -> Unit,
+    onIrAPerfil: () -> Unit,
     onCerrarSesion: () -> Unit
 ) {
     Scaffold(
@@ -26,7 +29,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Bienvenido a ESFOCAR APP",
+                text = "¡Bienvenido, ${usuario.nombre}!",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
@@ -51,6 +54,16 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            OutlinedButton(
+                onClick = onIrAPerfil,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text("Mi perfil")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
             OutlinedButton(
                 onClick = onCerrarSesion,
                 modifier = Modifier
