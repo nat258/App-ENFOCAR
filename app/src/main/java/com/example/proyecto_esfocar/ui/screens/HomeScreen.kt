@@ -29,7 +29,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "¡Bienvenido, ${usuario.nombre}!",
+                text = "¡Bienvenid@, ${usuario.nombre}!",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
