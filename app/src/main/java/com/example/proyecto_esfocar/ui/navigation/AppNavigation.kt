@@ -71,12 +71,17 @@ fun AppNavigation(
         composable(Screen.Registro.route) {
             RegistroScreen(
                 viewModel = registroViewModel,
-                onRegistroExitoso = {
-                    navController.navigate(Screen.Login.route) {
+                onRegistroExitoso = { usuarioCreado ->
+                    usuarioActual = usuarioCreado
+
+                    // Redirige a HomeScreen
+                    navController.navigate(Screen.Home.route) { // <-- Cambiar Screen.Perfil por Screen.Home
                         popUpTo(Screen.Registro.route) { inclusive = true }
                     }
                 },
-                onVolverALogin = { navController.popBackStack() }
+                onVolverALogin = {
+                    navController.popBackStack()
+                }
             )
         }
 

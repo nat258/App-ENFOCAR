@@ -25,13 +25,14 @@ class RegistroViewModel(private val repository: UsuarioRepository) : ViewModel()
 
     fun registrarUsuario() {
         val rutVal = rut.value.trim()
-        val nomVal = nombre.value.trim()
+        val nomVal = capitalizarNombre(nombre.value)
         val emailVal = email.value.trim().lowercase()
         val telVal = telefono.value.trim()
         val fechaVal = fechaNacimiento.value.trim()
         val dirVal = direccion.value.trim()
         val passVal = password.value.trim()
         val confPassVal = confirmarPassword.value.trim()
+
 
         // Validar que no haya campos vacíos
         if (rutVal.isEmpty() || nomVal.isEmpty() || emailVal.isEmpty() ||
@@ -64,7 +65,6 @@ class RegistroViewModel(private val repository: UsuarioRepository) : ViewModel()
             if (repository.existeEmail(emailVal)) {
                 _registroState.value = RegistroState.Error("El correo electrónico ya está registrado")
             } else {
-                // Se asigna automáticamente el rol 'Estudiante'
                 val nuevoUsuario = Usuario(
                     nombre = nomVal,
                     email = emailVal,
@@ -75,8 +75,11 @@ class RegistroViewModel(private val repository: UsuarioRepository) : ViewModel()
                     fechaNacimiento = fechaVal,
                     direccion = dirVal
                 )
-                repository.registrarUsuario(nuevoUsuario)
-                _registroState.value = RegistroState.Success
+                // Guarda en la base de datos y obtiene el id asignado
+                val idGenerado = repository.registrarUsuario(nuevoUsuario)
+                val usuarioCreado = nuevoUsuario.copy(id = idGenerado.toInt())
+
+                _registroState.value = RegistroState.Success(usuarioCreado)
             }
         }
     }
@@ -97,6 +100,18 @@ class RegistroViewModel(private val repository: UsuarioRepository) : ViewModel()
 sealed class RegistroState {
     object Idle : RegistroState()
     object Loading : RegistroState()
-    object Success : RegistroState()
+    data class Success(val usuario: Usuario) : RegistroState() // <-- Pasa el usuario creado
     data class Error(val mensaje: String) : RegistroState()
+}
+
+
+fun capitalizarNombre(nombre: String): String {
+    if (nombre.isBlank()) return ""
+    return nombre.trim().split(" ")
+        .filter { it.isNotBlank() }
+        .joinToString(" ") { palabra ->
+            palabra.lowercase(java.util.Locale.getDefault()).replaceFirstChar { char ->
+                if (char.isLowerCase()) char.titlecase(java.util.Locale.getDefault()) else char.toString()
+            }
+        }
 }

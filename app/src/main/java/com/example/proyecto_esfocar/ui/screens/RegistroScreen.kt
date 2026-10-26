@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import com.example.proyecto_esfocar.model.Usuario
 
 // Función auxiliar para convertir los milisegundos del calendario a formato DD/MM/AAAA
 fun formatearFechaMilisegundos(milis: Long): String {
@@ -32,7 +33,7 @@ fun formatearFechaMilisegundos(milis: Long): String {
 @Composable
 fun RegistroScreen(
     viewModel: RegistroViewModel,
-    onRegistroExitoso: () -> Unit,
+    onRegistroExitoso: (Usuario) -> Unit, // <-- Pasa el objeto Usuario
     onVolverALogin: () -> Unit
 ) {
     val rut by viewModel.rut.collectAsState()
@@ -50,9 +51,11 @@ fun RegistroScreen(
     val datePickerState = rememberDatePickerState()
 
     LaunchedEffect(registroState) {
-        if (registroState is RegistroState.Success) {
+        val estado = registroState
+        if (estado is RegistroState.Success) {
+            val usuarioCreado = estado.usuario
             viewModel.resetState()
-            onRegistroExitoso()
+            onRegistroExitoso(usuarioCreado)
         }
     }
 
