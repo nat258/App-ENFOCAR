@@ -14,6 +14,7 @@ import com.example.proyecto_esfocar.model.Usuario
 fun HomeScreen(
     usuario: Usuario,
     onIrADocumentos: () -> Unit,
+    onIrAGestionarUsuarios: () -> Unit,
     onIrAPerfil: () -> Unit,
     onCerrarSesion: () -> Unit
 ) {
@@ -50,6 +51,18 @@ fun HomeScreen(
                     .height(50.dp)
             ) {
                 Text("Ver Documentos y Recursos")
+            }
+            if (usuario.rol == "Administrador") {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedButton(
+                    onClick = onIrAGestionarUsuarios,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                ) {
+                    Text("Gestionar usuarios")
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))

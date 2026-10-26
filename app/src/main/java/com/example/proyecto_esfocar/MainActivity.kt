@@ -13,6 +13,8 @@ import com.example.proyecto_esfocar.viewmodel.DocumentosViewModel
 import com.example.proyecto_esfocar.viewmodel.LoginViewModel
 import com.example.proyecto_esfocar.viewmodel.RegistroViewModel
 import com.example.proyecto_esfocar.viewmodel.PerfilViewModel
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
@@ -22,6 +24,7 @@ class MainActivity : ComponentActivity() {
 
         val database = EsfocarDatabase.getDatabase(this)
         val usuarioRepository = UsuarioRepository(database.usuarioDao())
+        lifecycleScope.launch {usuarioRepository.crearAdministradorDemo()}
         val documentoRepository = DocumentoRepository(database.documentoDao())
 
         val loginViewModel = LoginViewModel(usuarioRepository)
@@ -35,7 +38,8 @@ class MainActivity : ComponentActivity() {
                     loginViewModel = loginViewModel,
                     registroViewModel = registroViewModel,
                     documentosViewModel = documentosViewModel,
-                    perfilViewModel = perfilViewModel
+                    perfilViewModel = perfilViewModel,
+                    usuarioRepository = usuarioRepository
                 )
             }
         }

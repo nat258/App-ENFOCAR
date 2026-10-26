@@ -18,14 +18,21 @@ class DocumentosViewModel(private val repository: DocumentoRepository) : ViewMod
             initialValue = emptyList()
         )
 
-    fun agregarDocumentoDemo(titulo: String, descripcion: String, categoria: String) {
+    fun agregarDocumento(
+        titulo: String,
+        descripcion: String,
+        categoria: String,
+        urlArchivo: String
+    ) {
         viewModelScope.launch {
             val nuevoDoc = Documento(
                 titulo = titulo,
                 descripcion = descripcion,
                 categoria = categoria,
-                fechaSubida = "2025-03-01"
+                fechaSubida = java.time.LocalDate.now().toString(),
+                url = urlArchivo
             )
+
             repository.agregarDocumento(nuevoDoc)
         }
     }
