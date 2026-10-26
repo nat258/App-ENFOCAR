@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.proyecto_esfocar.data.repository.UsuarioRepository
 import com.example.proyecto_esfocar.model.Usuario
 import com.example.proyecto_esfocar.ui.screens.BienvenidaScreen
+import com.example.proyecto_esfocar.ui.screens.CentroPracticaScreen
 import com.example.proyecto_esfocar.ui.screens.ConfiguracionesScreen
 import com.example.proyecto_esfocar.ui.screens.DocumentosScreen
 import com.example.proyecto_esfocar.ui.screens.GestionarUsuariosScreen
@@ -32,6 +33,7 @@ sealed class Screen(val route: String) {
     object Perfil : Screen("perfil")
     object GestionarUsuarios : Screen("gestionar_usuarios")
     object Configuraciones : Screen("configuraciones")
+    object CentroPractica : Screen("centro_practica") // <-- NUEVA RUTA
 }
 
 @Composable
@@ -83,7 +85,7 @@ fun AppNavigation(
             if (usuario != null) {
                 HomeScreen(
                     usuario = usuario,
-                    onIrADocumentos = { navController.navigate(Screen.Documentos.route) },
+                    onIrADocumentos = { navController.navigate(Screen.CentroPractica.route) },
                     onIrAGestionarUsuarios = { navController.navigate(Screen.GestionarUsuarios.route) },
                     onIrAPerfil = { navController.navigate(Screen.Perfil.route) },
                     onIrAConfiguraciones = { navController.navigate(Screen.Configuraciones.route) },
@@ -101,6 +103,16 @@ fun AppNavigation(
             }
         }
 
+        // RUTA DE CENTRO DE PRÁCTICA (2x2)
+        composable(Screen.CentroPractica.route) {
+            CentroPracticaScreen(
+                onIrALecciones = { navController.navigate(Screen.Documentos.route) },
+                onIrAHome = { navController.navigate(Screen.Home.route) },
+                onIrAPerfil = { navController.navigate(Screen.Perfil.route) },
+                onIrAConfiguraciones = { navController.navigate(Screen.Configuraciones.route) }
+            )
+        }
+
         composable(Screen.Perfil.route) {
             val usuario = usuarioActual
             if (usuario != null) {
@@ -108,7 +120,7 @@ fun AppNavigation(
                     usuario = usuario,
                     viewModel = perfilViewModel,
                     onVolver = { navController.popBackStack() },
-                    onIrADocumentos = { navController.navigate(Screen.Documentos.route) },
+                    onIrADocumentos = { navController.navigate(Screen.CentroPractica.route) },
                     onIrAConfiguraciones = { navController.navigate(Screen.Configuraciones.route) }
                 )
             } else {
@@ -153,7 +165,7 @@ fun AppNavigation(
             ConfiguracionesScreen(
                 onIrAHome = { navController.navigate(Screen.Home.route) },
                 onIrAPerfil = { navController.navigate(Screen.Perfil.route) },
-                onIrADocumentos = { navController.navigate(Screen.Documentos.route) },
+                onIrADocumentos = { navController.navigate(Screen.CentroPractica.route) },
                 onCerrarSesion = {
                     usuarioActual = null
                     navController.navigate(Screen.Login.route) {

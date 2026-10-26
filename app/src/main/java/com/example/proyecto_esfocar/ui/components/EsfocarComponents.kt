@@ -16,6 +16,10 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.material.icons.filled.PictureAsPdf
+import androidx.compose.material.icons.filled.Download
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,11 +64,12 @@ fun DocumentoItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(12.dp),
+            .padding(vertical = 6.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surface
         ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         onClick = { onAbrirClick(documento) }
     ) {
         Row(
@@ -73,43 +78,89 @@ fun DocumentoItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "📄",
-                style = MaterialTheme.typography.headlineMedium
-            )
+            // Círculo Verde con Ícono Dorado de PDF
+            Surface(
+                modifier = Modifier
+                    .size(52.dp)
+                    .clip(CircleShape),
+                color = MaterialTheme.colorScheme.primary
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = Icons.Default.PictureAsPdf,
+                        contentDescription = "Documento PDF",
+                        tint = AmarilloInstitucional,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.width(16.dp))
 
+            // Información del Documento
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = documento.titulo,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
                 )
+
+                Spacer(modifier = Modifier.height(2.dp))
 
                 Text(
                     text = documento.descripcion,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 SuggestionChip(
                     onClick = { onAbrirClick(documento) },
-                    label = { Text(documento.categoria) }
+                    label = {
+                        Text(
+                            text = documento.categoria,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
                 )
             }
 
-            if (esAdministrador) {
-                TextButton(
-                    onClick = { onDeleteClick(documento) }
-                ) {
-                    Text(
-                        text = "Eliminar",
-                        color = MaterialTheme.colorScheme.error
+            // Acciones (Descargar PDF y Eliminar)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                // Botón circular de Descarga con Flecha hacia abajo
+                FilledTonalIconButton(
+                    onClick = { onAbrirClick(documento) },
+                    colors = IconButtonDefaults.filledTonalIconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Download, // Ícono de Descargar (flecha hacia abajo)
+                        contentDescription = "Descargar y leer PDF"
+                    )
+                }
+
+                if (esAdministrador) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    TextButton(
+                        onClick = { onDeleteClick(documento) },
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text(
+                            text = "Eliminar",
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                 }
             }
         }
