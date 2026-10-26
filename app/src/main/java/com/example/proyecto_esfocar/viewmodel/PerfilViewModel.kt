@@ -82,7 +82,7 @@ class PerfilViewModel(
     // Guarda los cambios en la base de datos de Room
     fun guardarCambios() {
         val usuario = usuarioActual
-        val nombreNuevo = _nombre.value.trim()
+        val nombreNuevo = capitalizarNombre(_nombre.value)
         val emailNuevo = _email.value.trim().lowercase()
         val telefonoNuevo = _telefono.value.trim()
         val rutNuevo = _rut.value.trim()
