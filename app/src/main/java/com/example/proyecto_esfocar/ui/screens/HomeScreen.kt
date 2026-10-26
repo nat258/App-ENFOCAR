@@ -7,8 +7,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.proyecto_esfocar.ui.components.EsfocarTopBar
 import com.example.proyecto_esfocar.model.Usuario
+import com.example.proyecto_esfocar.ui.components.EsfocarBottomBar
+import com.example.proyecto_esfocar.ui.components.EsfocarTopBar
 
 @Composable
 fun HomeScreen(
@@ -16,10 +17,20 @@ fun HomeScreen(
     onIrADocumentos: () -> Unit,
     onIrAGestionarUsuarios: () -> Unit,
     onIrAPerfil: () -> Unit,
+    onIrAConfiguraciones: () -> Unit,
     onCerrarSesion: () -> Unit
 ) {
     Scaffold(
-        topBar = { EsfocarTopBar("ESFOCAR - Inicio") }
+        topBar = { EsfocarTopBar("ESFOCAR - Inicio") },
+        bottomBar = {
+            EsfocarBottomBar(
+                rutaActual = "home",
+                onIrAHome = { },
+                onIrAPerfil = onIrAPerfil,
+                onIrADocumentos = onIrADocumentos,
+                onIrAConfiguraciones = onIrAConfiguraciones
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -30,7 +41,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "¡Bienvenid@, ${usuario.nombre}!",
+                text = "¡Hola  ${usuario.nombre}!",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
@@ -52,6 +63,7 @@ fun HomeScreen(
             ) {
                 Text("Ver Documentos y Recursos")
             }
+
             if (usuario.rol == "Administrador") {
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -77,6 +89,7 @@ fun HomeScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
             OutlinedButton(
                 onClick = onCerrarSesion,
                 modifier = Modifier
