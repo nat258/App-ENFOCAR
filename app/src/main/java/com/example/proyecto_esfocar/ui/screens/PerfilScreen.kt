@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,12 +24,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.proyecto_esfocar.R
 import com.example.proyecto_esfocar.model.Usuario
+import com.example.proyecto_esfocar.ui.components.EsfocarBottomBar
 import com.example.proyecto_esfocar.ui.components.EsfocarTopBar
 import com.example.proyecto_esfocar.viewmodel.PerfilViewModel
 import java.io.File
 import java.io.FileOutputStream
 
-// Guarda el Bitmap tomado con la cámara en la carpeta de cache temporal del teléfono
 fun guardarBitmapEnCache(context: Context, bitmap: Bitmap): String {
     val archivo = File(context.cacheDir, "foto_perfil_${System.currentTimeMillis()}.jpg")
     FileOutputStream(archivo).use { out ->
@@ -43,7 +42,9 @@ fun guardarBitmapEnCache(context: Context, bitmap: Bitmap): String {
 fun PerfilScreen(
     usuario: Usuario,
     viewModel: PerfilViewModel,
-    onVolver: () -> Unit
+    onVolver: () -> Unit,
+    onIrADocumentos: () -> Unit,
+    onIrAConfiguraciones: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -59,14 +60,12 @@ fun PerfilScreen(
 
     var mostrarOpcionesFoto by remember { mutableStateOf(false) }
 
-    // Lanzador para la Galería
     val galeriaLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let { viewModel.cambiarFotoPerfil(it.toString()) }
     }
 
-    // Lanzador para la Cámara
     val camaraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap: Bitmap? ->
@@ -81,7 +80,16 @@ fun PerfilScreen(
     }
 
     Scaffold(
-        topBar = { EsfocarTopBar("Mi perfil") }
+        topBar = { EsfocarTopBar("Mi perfil", onBackClick = onVolver) },
+        bottomBar = {
+            EsfocarBottomBar(
+                rutaActual = "perfil",
+                onIrAHome = onVolver,
+                onIrAPerfil = { },
+                onIrADocumentos = onIrADocumentos,
+                onIrAConfiguraciones = onIrAConfiguraciones
+            )
+        }
     ) { paddingValues ->
 
         Column(
@@ -100,7 +108,6 @@ fun PerfilScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Avatar circular interactivo con la foto de perfil
             Box(
                 contentAlignment = Alignment.BottomEnd,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -235,7 +242,6 @@ fun PerfilScreen(
             }
         }
 
-        // Diálogo flotante para seleccionar Cámara u Galería
         if (mostrarOpcionesFoto) {
             AlertDialog(
                 onDismissRequest = { mostrarOpcionesFoto = false },
@@ -244,7 +250,7 @@ fun PerfilScreen(
                 confirmButton = {
                     TextButton(onClick = {
                         mostrarOpcionesFoto = false
-                        camaraLauncher.launch()
+                        camaraLauncher.launch(null)
                     }) {
                         Text("📸 Tomar Foto")
                     }
