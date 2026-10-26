@@ -17,7 +17,14 @@ La aplicación corresponde a un MVP académico y no está conectada a los sistem
 - Implementar la gestión de usuarios y documentos.
 - Incorporar almacenamiento local mediante Room.
 - Aplicar validaciones, gestión de estado y retroalimentación visual.
-- Integrar recursos nativos del dispositivo.
+- Crear una cuenta de administrador de prueba.
+- Permitir al administrador consultar, editar y eliminar cuentas de estudiantes y profesores.
+- Permitir la modificación del nombre, correo electrónico y rol de las cuentas gestionadas.
+- Incorporar confirmación antes de eliminar una cuenta.
+- Proteger la cuenta de administrador frente a las operaciones de edición y eliminación desde la pantalla de gestión.
+- Permitir al administrador incorporar documentos PDF.
+- Facilitar la selección y apertura de archivos PDF asociados a los documentos.
+- Controlar la visibilidad de las opciones administrativas según el rol del usuario.
 - Utilizar Git, GitHub y Trello para colaborar y organizar el desarrollo.
 
 ## 3. Tecnologías utilizadas
@@ -32,6 +39,7 @@ La aplicación corresponde a un MVP académico y no está conectada a los sistem
 | Room | Persistencia local de datos |
 | SQLite | Base de datos local utilizada por Room |
 | KSP | Procesamiento de código para Room |
+| Coroutines | Ejecución de operaciones asíncronas |
 | Git | Control de versiones |
 | GitHub | Repositorio del proyecto |
 | Trello | Organización y seguimiento de tareas |
@@ -79,6 +87,7 @@ Proyecto_ESFOCAR/
 │           │       │   ├── screens/
 │           │       │   │   ├── BienvenidaScreen.kt
 │           │       │   │   ├── DocumentosScreen.kt
+│           │       │   │   ├── GestionarUsuariosScreen.kt
 │           │       │   │   ├── HomeScreen.kt
 │           │       │   │   ├── LoginScreen.kt
 │           │       │   │   ├── PerfilScreen.kt
@@ -109,4 +118,10 @@ Proyecto_ESFOCAR/
 └── README.md
 ```
 
-**Nota:** el árbol representa los archivos identificados durante el desarrollo. Conviene comprobarlo en Android Studio
+**Nota:** el árbol representa la estructura identificada durante el desarrollo. Puede variar según los archivos existentes en el proyecto.
+
+## 5. Funcionalidades implementadas
+
+### 5.1. Pantalla de bienvenida
+
+Presenta la aplicación y permite acceder a

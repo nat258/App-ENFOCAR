@@ -19,6 +19,8 @@ import androidx.compose.runtime.setValue
 import com.example.proyecto_esfocar.model.Usuario
 import com.example.proyecto_esfocar.ui.screens.PerfilScreen
 import com.example.proyecto_esfocar.viewmodel.PerfilViewModel
+import com.example.proyecto_esfocar.ui.screens.GestionarUsuariosScreen
+import com.example.proyecto_esfocar.data.repository.UsuarioRepository
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
@@ -26,8 +28,9 @@ sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Documentos : Screen("documentos")
     object Bienvenida : Screen("bienvenida")
-
     object Perfil : Screen("perfil")
+
+    object GestionarUsuarios : Screen("gestionar_usuarios")
 }
 
 @Composable
@@ -35,7 +38,8 @@ fun AppNavigation(
     loginViewModel: LoginViewModel,
     registroViewModel: RegistroViewModel,
     documentosViewModel: DocumentosViewModel,
-    perfilViewModel: PerfilViewModel
+    perfilViewModel: PerfilViewModel,
+    usuarioRepository: UsuarioRepository
 
 ) {
     val navController = rememberNavController()
@@ -90,24 +94,28 @@ fun AppNavigation(
             val usuario = usuarioActual
 
             if (usuario != null) {
-                HomeScreen(
-                    usuario = usuario,
-                    onIrADocumentos = {
-                        navController.navigate(Screen.Documentos.route)
-                    },
-                    onIrAPerfil = {
-                        navController.navigate(Screen.Perfil.route)
-                    },
-                    onCerrarSesion = {
-                        usuarioActual = null
+                    HomeScreen(
+                        usuario = usuario,
+                        onIrADocumentos = {
+                            navController.navigate(Screen.Documentos.route)
+                        },
+                        onIrAGestionarUsuarios = {
+                            navController.navigate(Screen.GestionarUsuarios.route)
+                        },
+                        onIrAPerfil = {
+                            navController.navigate(Screen.Perfil.route)
+                        },
+                        onCerrarSesion = {
+                            usuarioActual = null
 
-                        navController.navigate(Screen.Login.route) {
-                            popUpTo(navController.graph.id) {
-                                inclusive = true
+                            navController.navigate(Screen.Login.route) {
+                                popUpTo(navController.graph.id) {
+                                    inclusive = true
+                                }
                             }
                         }
-                    }
-                )
+
+                    )
             } else {
                 navController.navigate(Screen.Login.route) {
                     popUpTo(navController.graph.id) {
@@ -137,12 +145,42 @@ fun AppNavigation(
         }
 
         composable(Screen.Documentos.route) {
-            DocumentosScreen(
-                viewModel = documentosViewModel,
-                onVolver = {
-                    navController.popBackStack()
+            val usuario = usuarioActual
+
+            if (usuario != null) {
+                DocumentosScreen(
+                    viewModel = documentosViewModel,
+                    esAdministrador = usuario.rol == "Administrador",
+                    onVolver = {
+                        navController.popBackStack()
+                    }
+                )
+            } else {
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
                 }
-            )
+            }
+        }
+
+        composable(Screen.GestionarUsuarios.route) {
+            val usuario = usuarioActual
+
+            if (usuario != null && usuario.rol == "Administrador") {
+                GestionarUsuariosScreen(
+                    usuarioRepository = usuarioRepository,
+                    onVolver = {
+                        navController.popBackStack()
+                    }
+                )
+            } else {
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.proyecto_esfocar.model.Usuario
+import androidx.room.Delete
 
 @Dao
 interface UsuarioDao {
@@ -23,4 +24,7 @@ interface UsuarioDao {
 
     @Update
     suspend fun actualizarUsuario(usuario: Usuario): Int
+
+    @Delete
+    suspend fun eliminarUsuario(usuario: Usuario): Int
 }
